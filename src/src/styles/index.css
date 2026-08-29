@@ -1,0 +1,136 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+/* Dark mode is class-based: <html class="dark"> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Color tokens — "Pulse" identity: near-black ground, electric-violet signal, mint for positive actions */
+  --color-bg: #0b0b10;
+  --color-bg-elevated: #12121a;
+  --color-surface: rgba(255, 255, 255, 0.04);
+  --color-surface-hover: rgba(255, 255, 255, 0.07);
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.14);
+
+  --color-text-primary: #f4f4f6;
+  --color-text-muted: #9a9aa6;
+  --color-text-faint: #5e5e6b;
+
+  --color-accent: #6e5bff;
+  --color-accent-hover: #7d6cff;
+  --color-accent-muted: rgba(110, 91, 255, 0.15);
+
+  --color-positive: #00e5a0;
+  --color-danger: #ff5c72;
+  --color-warning: #ffb84d;
+
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* Light theme token overrides */
+.light {
+  --color-bg: #fafafa;
+  --color-bg-elevated: #ffffff;
+  --color-surface: rgba(0, 0, 0, 0.03);
+  --color-surface-hover: rgba(0, 0, 0, 0.05);
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-border-strong: rgba(0, 0, 0, 0.14);
+
+  --color-text-primary: #14141a;
+  --color-text-muted: #5e5e6b;
+  --color-text-faint: #9a9aa6;
+
+  --color-accent-muted: rgba(110, 91, 255, 0.1);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  html.light {
+    color-scheme: light;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+  }
+
+  /* Respect reduced motion preference globally */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Visible keyboard focus, never removed */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer utilities {
+  /* Glass panel — the recurring surface treatment across the app */
+  .glass {
+    background-color: var(--color-surface);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--color-border);
+  }
+
+  /* Signature ambient glow — used sparingly behind brand mark / active states */
+  .pulse-glow {
+    position: relative;
+  }
+  .pulse-glow::before {
+    content: "";
+    position: absolute;
+    inset: -40%;
+    background: radial-gradient(circle, var(--color-accent) 0%, transparent 65%);
+    opacity: 0.25;
+    filter: blur(24px);
+    animation: pulse-breathe 4s ease-in-out infinite;
+    z-index: -1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pulse-glow::before {
+      animation: none;
+    }
+  }
+
+  @keyframes pulse-breathe {
+    0%, 100% { opacity: 0.18; transform: scale(0.96); }
+    50% { opacity: 0.32; transform: scale(1.04); }
+  }
+}
