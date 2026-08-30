@@ -1,60 +1,126 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Helmet } from 'react-helmet-async';
+import toast from 'react-hot-toast';
+
+import { loginSchema } from '../../utils/validators';
+import { useAuthStore } from '../../store/authStore';
+import AuthCard from '../../components/forms/AuthCard';
+import AuthHeader from '../../components/forms/AuthHeader';
+import FormField from '../../components/forms/FormField';
+import PasswordField from '../../components/forms/PasswordField';
 import Button from '../../components/ui/Button';
 
 export default function Login() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const login = useAuthStore((s) => s.login);
+  const [submitting, setSubmitting] = useState(false);
+
+  const from = location.state?.from?.pathname || '/home';
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { identifier: '', password: '', rememberMe: false },
+  });
+
+  async function onSubmit(data) {
+    setSubmitting(true);
+    try {
+      await login(data);
+      toast.success('Welcome back!');
+      navigate(from, { replace: true });
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
-    <div className="glass flex flex-col gap-5 rounded-2xl p-8">
-      <div>
-        <h1 className="font-display text-2xl font-semibold">Log in to Pulse</h1>
-        <p className="mt-1 text-sm text-text-muted">Welcome back. Enter your details below.</p>
-      </div>
+    <>
+      <Helmet>
+        <title>Log in · Pulse</title>
+      </Helmet>
 
-      <form className="flex flex-col gap-3" aria-describedby="login-status">
-        <label className="flex flex-col gap-1 text-sm">
-          <span className="text-text-muted">Email or username</span>
-          <input
-            type="text"
-            name="identifier"
-            className="h-11 rounded-xl border border-border bg-bg px-3 text-sm outline-none focus-visible:border-accent"
+      <AuthCard>
+        <AuthHeader
+          title="Log in to Pulse"
+          subtitle="Welcome back. Enter your details below."
+        />
+
+        <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-4">
+          <FormField
+            id="identifier"
+            label="Email or username"
+            placeholder="alex@pulse.dev"
             autoComplete="username"
+            error={errors.identifier?.message}
+            {...register('identifier')}
           />
-        </label>
 
-        <label className="flex flex-col gap-1 text-sm">
-          <span className="text-text-muted">Password</span>
-          <input
-            type="password"
-            name="password"
-            className="h-11 rounded-xl border border-border bg-bg px-3 text-sm outline-none focus-visible:border-accent"
+          <PasswordField
+            id="password"
+            label="Password"
+            placeholder="••••••••"
             autoComplete="current-password"
+            error={errors.password?.message}
+            {...register('password')}
           />
-        </label>
 
-        <div className="flex items-center justify-between text-sm">
-          <label className="flex items-center gap-2 text-text-muted">
-            <input type="checkbox" className="accent-accent" />
-            Remember me
-          </label>
-          <Link to="/forgot-password" className="text-accent hover:underline">
-            Forgot password?
-          </Link>
+          <div className="flex items-center justify-between text-sm">
+            <label className="flex cursor-pointer items-center gap-2 text-text-muted">
+              <input
+                type="checkbox"
+                className="accent-accent"
+                {...register('rememberMe')}
+              />
+              Remember me
+            </label>
+            <Link
+              to="/forgot-password"
+              className="text-accent hover:underline"
+            >
+              Forgot password?
+            </Link>
+          </div>
+
+          <Button
+            type="submit"
+            size="lg"
+            className="mt-1 w-full"
+            disabled={submitting}
+          >
+            {submitting ? 'Logging in…' : 'Log in'}
+          </Button>
+        </form>
+
+        <div className="relative flex items-center gap-3">
+          <div className="h-px flex-1 bg-border" />
+          <span className="text-xs text-text-faint">or</span>
+          <div className="h-px flex-1 bg-border" />
         </div>
 
-        <p id="login-status" className="text-xs text-text-faint">
-          Authentication is wired up fully in Phase 2 — this form is the visual shell.
+        <p className="rounded-xl border border-border bg-surface px-4 py-3 text-xs text-text-muted">
+          <strong className="text-text-primary">Demo credentials:</strong>
+          <br />
+          Email: <code className="text-accent">alex@pulse.dev</code> &nbsp;/&nbsp;
+          Password: <code className="text-accent">Password1</code>
         </p>
 
-        <Button type="submit" size="lg" className="mt-1 w-full">
-          Log in
-        </Button>
-      </form>
-
-      <p className="text-center text-sm text-text-muted">
-        New to Pulse?{' '}
-        <Link to="/signup" className="text-accent hover:underline">
-          Create an account
-        </Link>
-      </p>
-    </div>
+        <p className="text-center text-sm text-text-muted">
+          New to Pulse?{' '}
+          <Link to="/signup" className="text-accent hover:underline">
+            Create an account
+          </Link>
+        </p>
+      </AuthCard>
+    </>
   );
 }

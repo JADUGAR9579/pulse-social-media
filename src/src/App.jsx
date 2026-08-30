@@ -6,15 +6,14 @@ import { Toaster } from 'react-hot-toast';
 
 import MainLayout from './layouts/MainLayout';
 import AuthLayout from './layouts/AuthLayout';
+import ProtectedRoute from './routes/ProtectedRoute';
+import AdminRoute from './routes/AdminRoute';
 import PageLoader from './components/loaders/PageLoader';
 import { mainRoutes, adminRoutes, authRoutes, NotFoundPage } from './routes/routes.config';
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: {
-      staleTime: 60 * 1000,
-      retry: 1,
-    },
+    queries: { staleTime: 60 * 1000, retry: 1 },
   },
 });
 
@@ -27,18 +26,25 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Navigate to="/home" replace />} />
 
-              {/* Authenticated app shell — auth guarding added in Phase 2 */}
-              <Route element={<MainLayout />}>
-                {mainRoutes.map(({ path, element: Element }) => (
-                  <Route key={path} path={path} element={<Element />} />
-                ))}
-                {/* Admin guarding (role check) added in Phase 2/8 */}
-                {adminRoutes.map(({ path, element: Element }) => (
-                  <Route key={path} path={path} element={<Element />} />
-                ))}
+              {/* ── Protected app shell ──────────────────────────────── */}
+              <Route element={<ProtectedRoute />}>
+                <Route element={<MainLayout />}>
+                  {mainRoutes.map(({ path, element: Element }) => (
+                    <Route key={path} path={path} element={<Element />} />
+                  ))}
+                </Route>
               </Route>
 
-              {/* Unauthenticated shell */}
+              {/* ── Admin-only routes ─────────────────────────────────── */}
+              <Route element={<AdminRoute />}>
+                <Route element={<MainLayout />}>
+                  {adminRoutes.map(({ path, element: Element }) => (
+                    <Route key={path} path={path} element={<Element />} />
+                  ))}
+                </Route>
+              </Route>
+
+              {/* ── Public auth shell ─────────────────────────────────── */}
               <Route element={<AuthLayout />}>
                 {authRoutes.map(({ path, element: Element }) => (
                   <Route key={path} path={path} element={<Element />} />
@@ -52,10 +58,13 @@ export default function App() {
           <Toaster
             position="bottom-center"
             toastOptions={{
+              duration: 3000,
               style: {
                 background: 'var(--color-bg-elevated)',
                 color: 'var(--color-text-primary)',
                 border: '1px solid var(--color-border)',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '14px',
               },
             }}
           />

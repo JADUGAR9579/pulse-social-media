@@ -1,15 +1,22 @@
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
+import { useAuthStore } from '../store/authStore';
 import Sidebar from '../components/sidebar/Sidebar';
 import RightPanel from '../components/sidebar/RightPanel';
 import MobileNav from '../components/navbar/MobileNav';
 import TopBar from '../components/navbar/TopBar';
 
 /**
- * Three-column shell used by every authenticated page:
- * Sidebar | page content (Outlet) | RightPanel
- * Collapses to a single column with a top bar + bottom nav on mobile.
+ * Three-column authenticated shell.
+ * Also responsible for rehydrating the auth session on first mount.
  */
 export default function MainLayout() {
+  const rehydrate = useAuthStore((s) => s.rehydrate);
+
+  useEffect(() => {
+    rehydrate();
+  }, [rehydrate]);
+
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-[1280px]">
       <Sidebar />
