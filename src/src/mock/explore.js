@@ -1,0 +1,171 @@
+/**
+ * Seeded explore data.
+ * In production this comes from a real trending/recommendations API.
+ */
+
+export const TRENDING_TOPICS = [
+  {
+    id: 'trend_1',
+    category: 'Technology',
+    topic: '#ReactJS',
+    tweets: 48200,
+    change: '+12%',
+    rising: true,
+  },
+  {
+    id: 'trend_2',
+    category: 'Technology',
+    topic: '#TailwindCSS',
+    tweets: 31500,
+    change: '+8%',
+    rising: true,
+  },
+  {
+    id: 'trend_3',
+    category: 'Development',
+    topic: '#OpenSource',
+    tweets: 27800,
+    change: '+3%',
+    rising: true,
+  },
+  {
+    id: 'trend_4',
+    category: 'AI & Tech',
+    topic: '#HuggingFace',
+    tweets: 22400,
+    change: '+21%',
+    rising: true,
+  },
+  {
+    id: 'trend_5',
+    category: 'Design',
+    topic: '#UIDesign',
+    tweets: 18900,
+    change: '-2%',
+    rising: false,
+  },
+  {
+    id: 'trend_6',
+    category: 'Development',
+    topic: '#TypeScript',
+    tweets: 15600,
+    change: '+5%',
+    rising: true,
+  },
+  {
+    id: 'trend_7',
+    category: 'Technology',
+    topic: '#WebDev',
+    tweets: 14200,
+    change: '+1%',
+    rising: true,
+  },
+  {
+    id: 'trend_8',
+    category: 'AI & Tech',
+    topic: '#MachineLearning',
+    tweets: 12800,
+    change: '+9%',
+    rising: true,
+  },
+  {
+    id: 'trend_9',
+    category: 'Development',
+    topic: '#BuildInPublic',
+    tweets: 9400,
+    change: '+14%',
+    rising: true,
+  },
+  {
+    id: 'trend_10',
+    category: 'Design',
+    topic: '#Figma',
+    tweets: 8100,
+    change: '-1%',
+    rising: false,
+  },
+];
+
+export const SUGGESTED_USERS = [
+  {
+    id: 'user_002',
+    name: 'Priya Patel',
+    username: 'priyapatel',
+    avatar: 'https://api.dicebear.com/8.x/avataaars/svg?seed=priya',
+    bio: 'Frontend engineer. Accessibility advocate. she/her ✨',
+    followers: 542,
+    verified: false,
+  },
+  {
+    id: 'user_003',
+    name: 'Jordan Kim',
+    username: 'jordankim',
+    avatar: 'https://api.dicebear.com/8.x/avataaars/svg?seed=jordan',
+    bio: 'Building in public. OSS contributor.',
+    followers: 890,
+    verified: false,
+  },
+  {
+    id: 'user_004',
+    name: 'Sam Torres',
+    username: 'samtorres',
+    avatar: 'https://api.dicebear.com/8.x/avataaars/svg?seed=sam',
+    bio: 'Web perf nerd. Making the web work for everyone.',
+    followers: 2100,
+    verified: false,
+  },
+  {
+    id: 'user_admin',
+    name: 'Pulse Admin',
+    username: 'pulseadmin',
+    avatar: 'https://api.dicebear.com/8.x/avataaars/svg?seed=admin',
+    bio: 'Official Pulse platform account. 🌐',
+    followers: 9800,
+    verified: true,
+  },
+];
+
+export const POPULAR_MEDIA = [
+  {
+    id: 'media_1',
+    url: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&q=80',
+    alt: 'Code editor',
+    tweetId: 'tweet_004',
+    username: 'jordankim',
+  },
+  {
+    id: 'media_2',
+    url: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&q=80',
+    alt: 'Code on monitor',
+    tweetId: 'tweet_007',
+    username: 'jordankim',
+  },
+  {
+    id: 'media_3',
+    url: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=400&q=80',
+    alt: 'Abstract gradient',
+    tweetId: 'tweet_001',
+    username: 'alexrivera',
+  },
+  {
+    id: 'media_4',
+    url: 'https://images.unsplash.com/photo-1558591710-4b4a1ae0f7a3?w=400&q=80',
+    alt: 'Purple abstract',
+    tweetId: 'tweet_002',
+    username: 'pulseadmin',
+  },
+  {
+    id: 'media_5',
+    url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80',
+    alt: 'Mountain landscape',
+    tweetId: 'tweet_003',
+    username: 'priyapatel',
+  },
+  {
+    id: 'media_6',
+    url: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&q=80',
+    alt: 'Earth from space',
+    tweetId: 'tweet_006',
+    username: 'jordankim',
+  },
+];

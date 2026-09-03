@@ -1,6 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Feather, LogOut } from 'lucide-react';
-import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 
 import Logo from '../common/Logo';
@@ -31,10 +30,14 @@ export default function Sidebar() {
         </div>
 
         <nav className="flex flex-col gap-1">
-          {PRIMARY_NAV.map(({ label, icon: Icon, path }) => (
+          {PRIMARY_NAV.map(({ label, icon: Icon, path }) => {
+            // Profile link uses the actual username for correct active matching
+            const resolvedPath =
+              path === '/profile' && user ? `/profile/${user.username}` : path;
+            return (
             <NavLink
               key={path}
-              to={path}
+              to={resolvedPath}
               className={({ isActive }) =>
                 cn(
                   'group flex items-center justify-center gap-4 rounded-full px-3 py-3 text-text-primary transition-colors lg:justify-start',
@@ -52,7 +55,8 @@ export default function Sidebar() {
                 </>
               )}
             </NavLink>
-          ))}
+            );
+          })}
         </nav>
       </div>
 

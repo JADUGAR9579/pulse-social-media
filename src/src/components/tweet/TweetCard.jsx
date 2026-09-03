@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MoreHorizontal, Trash2, Pin, Flag } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -67,23 +68,30 @@ export default function TweetCard({ tweet }) {
 
       <div className="flex gap-3">
         {/* Avatar */}
-        <div className="flex-shrink-0">
+        <Link
+          to={`/profile/${tweet.user.username}`}
+          className="flex-shrink-0"
+          aria-label={`View ${tweet.user.name}'s profile`}
+        >
           <img
             src={tweet.user.avatar}
             alt={tweet.user.name}
-            className="h-10 w-10 rounded-full bg-surface object-cover"
+            className="h-10 w-10 rounded-full bg-surface object-cover transition-opacity hover:opacity-90"
             loading="lazy"
           />
-        </div>
+        </Link>
 
         {/* Content column */}
         <div className="min-w-0 flex-1">
           {/* Header row */}
           <div className="flex items-start justify-between gap-2">
             <div className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-0.5">
-              <span className="truncate font-semibold text-text-primary leading-tight">
+              <Link
+                to={`/profile/${tweet.user.username}`}
+                className="truncate font-semibold text-text-primary leading-tight hover:underline"
+              >
                 {tweet.user.name}
-              </span>
+              </Link>
               {tweet.user.verified && (
                 <span
                   className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[9px] text-white"
@@ -92,9 +100,12 @@ export default function TweetCard({ tweet }) {
                   ✓
                 </span>
               )}
-              <span className="truncate text-sm text-text-muted">
+              <Link
+                to={`/profile/${tweet.user.username}`}
+                className="truncate text-sm text-text-muted hover:underline"
+              >
                 @{tweet.user.username}
-              </span>
+              </Link>
               <span className="text-text-faint" aria-hidden>·</span>
               <time
                 dateTime={tweet.createdAt}

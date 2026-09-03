@@ -24,6 +24,7 @@ export const mainRoutes = [
   { path: '/home', element: Home },
   { path: '/explore', element: Explore },
   { path: '/profile', element: Profile },
+  { path: '/profile/:username', element: Profile }, // any user's profile
   { path: '/notifications', element: Notifications },
   { path: '/messages', element: Messages },
   { path: '/bookmarks', element: Bookmarks },
