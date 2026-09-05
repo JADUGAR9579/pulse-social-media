@@ -6,11 +6,14 @@ import Logo from '../common/Logo';
 import Button from '../ui/Button';
 import { PRIMARY_NAV } from '../../constants/navigation';
 import { useAuthStore } from '../../store/authStore';
+import { useNotificationStore } from '../../store/notificationStore';
 import { cn } from '../../lib/cn';
 
 export default function Sidebar() {
   const navigate = useNavigate();
   const { user, logout, isAuthenticated } = useAuthStore();
+  const notifications = useNotificationStore((s) => s.notifications);
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   function handleLogout() {
     logout();
@@ -47,10 +50,17 @@ export default function Sidebar() {
             >
               {({ isActive }) => (
                 <>
-                  <Icon
-                    size={22}
-                    className={isActive ? 'text-accent' : 'text-text-muted group-hover:text-text-primary'}
-                  />
+                  <span className="relative">
+                    <Icon
+                      size={22}
+                      className={isActive ? 'text-accent' : 'text-text-muted group-hover:text-text-primary'}
+                    />
+                    {label === 'Notifications' && unreadCount > 0 && (
+                      <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-bold text-white">
+                        {unreadCount > 9 ? '9+' : unreadCount}
+                      </span>
+                    )}
+                  </span>
                   <span className="hidden text-base lg:inline">{label}</span>
                 </>
               )}
